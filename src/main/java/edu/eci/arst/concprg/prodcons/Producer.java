@@ -32,6 +32,14 @@ public class Producer extends Thread {
     public void run() {
         while (true) {
 
+            while(queue.size()>=stockLimit){
+                try{
+                    queue.wait();
+                }catch(InterruptedException ex){
+                    throw new RuntimeException(ex);
+                }
+            }
+
             dataSeed = dataSeed + rand.nextInt(100);
             System.out.println("Producer added " + dataSeed);
             queue.add(dataSeed);
